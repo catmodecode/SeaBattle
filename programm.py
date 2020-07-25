@@ -12,7 +12,7 @@ def connect(sid, environ):
  
 @sio.event 
 def my_message(sid, data): 
- print('message ', data) 
+ print('message ', data)
  
 @sio.event 
 def disconnect(sid): 
