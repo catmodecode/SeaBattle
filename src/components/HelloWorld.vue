@@ -103,10 +103,15 @@
 </template>
 
 <script>
+import Vue from 'vue'
+
 export default {
   name: "HelloWorld",
   props: {
     msg: String
+  },
+  created: function () {
+    Vue.$socket.mynamespace.emit('my_message', {hello: "Hello!"})
   }
 };
 </script>
