@@ -5,8 +5,18 @@
       <input type="text" id="user-name" v-model="name" />
     </div>
     <div class="row-item">
-      <input class="row-button" type="button" v-on:click="login" value="Быстрая игра" />
-      <input class="row-button" type="button" v-on:click="login" value="Частная игра" />
+      <input
+        class="row-button"
+        type="button"
+        v-on:click="login"
+        value="Быстрая игра"
+      />
+      <input
+        class="row-button"
+        type="button"
+        v-on:click="login"
+        value="Частная игра"
+      />
     </div>
   </form>
 </template>
@@ -23,12 +33,12 @@ export default {
   },
   methods: {
     login: function() {
-      this.$socket.emit("my_message", { name: this.name });
+      this.$socket.emit("auth", "this.name");
       store.dispatch("authStore/authenticate", {
         user: this.name,
         sid: this.$socket.id,
       });
-      this.$router.push({name: 'Room', params: {roomId: 'asd213'}});
+      this.$router.push({ name: "Room", params: { roomId: "asd213" } });
     },
   },
   sockets: {
@@ -44,8 +54,8 @@ export default {
     },
   },
   created: function() {
-    this.name = localStorage.user
-  }
+    this.name = localStorage.user;
+  },
 };
 </script>
 
