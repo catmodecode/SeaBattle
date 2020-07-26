@@ -38,16 +38,18 @@ export default {
         user: this.name,
         sid: this.$socket.id,
       });
-      this.$router.push({ name: "Room", params: { roomId: "asd213" } });
+      this.$socket.emit("quickroom", '', reply => {
+        this.$router.push({ name: "Room", params: { roomId: reply } });
+      });
     },
   },
   sockets: {
     connect: function() {
       console.log("socket connected");
     },
-    customEmit: function(data) {
+    roomlink: function(data) {
       console.log(
-        'this method was fired by the socket server. eg: io.emit("customEmit", ' +
+        'this method was fired by the socket server. eg: io.emit("roomlink", ' +
           data +
           ")"
       );

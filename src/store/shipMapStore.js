@@ -5,7 +5,20 @@ export default {
   state: () => ({
     ships: Object.fromEntries(
       Object.keys(playField.ships).map((shipName) => {
-        return [shipName, playField.ships[shipName]];
+        return [
+          shipName,
+          ((ships) => {
+            var arShips = [];
+            for (var shipsCount = 0; shipsCount < ships.count; shipsCount++) {
+              var qShip = [];
+              for (var shipsSize = 0; shipsSize < ships.size; shipsSize++) {
+                qShip.push({ x: null, y: null });
+              }
+              arShips.push(qShip);
+            }
+            return arShips;
+          })(playField.ships[shipName]),
+        ];
       })
     ),
     // map: Array.from({ length: playField.verticalMarks }, (v) =>
@@ -13,19 +26,13 @@ export default {
     // ),
   }),
   mutations: {
-    // setShip(state, coords) {
-    //   state.sid = sid;
-    //   localStorage.sid = sid;
-    //   state.user = user;
-    //   localStorage.user = user;
-    // },
+    setShip(state, {shipType, shipIndex, coords}) {
+      state.ships[shipType][shipIndex] = coords;
+    },
   },
   actions: {
-    // authenticate({ commit }, user) {
-    //   commit("storeUser", user);
-    // },
-    // logout({ commit }) {
-    //   commit("storeUser", { sid: null, user: null });
-    // },
+    addShip({ commit }, shipType, shipIndex, coords) {
+      commit("setShip", {shipType: shipType, shipIndex: shipIndex, coords: coords});
+    },
   },
 };
