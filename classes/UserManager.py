@@ -1,4 +1,4 @@
-from User import User
+from classes.User import User
 
 class UserManager:
     userList = []
@@ -6,23 +6,11 @@ class UserManager:
     def addUser(self, User):
         self.userList.append(User)
 
+    def getBySid(self, sid):
+        return self.userList.index(next((user for user in self.userList if user.sid == sid), None)) 
+
     def getList(self):
         return(self.userList)
     
     def removeUser(self,sid):
         self.userList.remove(next((user for user in self.userList if user.sid == sid), None))
-
-pepe = User('12','lalka')
-lalka = User('11','pepe')
-
-pepeList = UserManager()
-pepeList.addUser(pepe)
-pepeList.addUser(lalka)
-
-print(pepeList.getList())
-
-pepeList.removeUser('12')
-
-print(pepeList.getList())
-
-
