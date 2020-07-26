@@ -28,7 +28,7 @@ export default {
         user: this.name,
         sid: this.$socket.id,
       });
-      console.log({ user: this.name, sid: this.$socket.id });
+      this.$router.push({name: 'Room', params: {roomId: 'asd213'}});
     },
   },
   sockets: {
@@ -43,6 +43,9 @@ export default {
       );
     },
   },
+  created: function() {
+    this.name = localStorage.user
+  }
 };
 </script>
 
