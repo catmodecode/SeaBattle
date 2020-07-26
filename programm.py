@@ -30,11 +30,11 @@ def quickroom(sid, data):
     if playRooms.readyRoom != []:
         playRooms.readyRoom[0].setUserTwo(authUsers.userList[authUsers.getBySid(sid)])
         room = playRooms.readyRoom[0]
-        print(room.userOne, room.userTwo, room.link)
+        print(room.userOne.name, room.userTwo.name, room.link)
     else:
         room = Room(authUsers.userList[authUsers.getBySid(sid)],'public')
         playRooms.addRoom(room,authUsers.userList[authUsers.getBySid(sid)])
-        print (room.userOne, room.link)
+        print (room.userOne.name, room.link)
     return room.link
 
 @sio.event 
