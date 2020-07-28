@@ -6,6 +6,7 @@ class User:
     
     def setName(self, name):
         self.name = name
+        print('name edit')
 
     def get(self):
         return({'name':self.name,'sid':self.sid})
