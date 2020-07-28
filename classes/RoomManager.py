@@ -22,10 +22,9 @@ class RoomManager:
     def deleteRoom(self, roomIndex):
         roomLink = None
         if self.roomList[roomIndex].userOne.playRoom != None:
-            roomLink = self.roomList[roomIndex].link
             self.roomList[roomIndex].userOne.playRoom = None
-        if (self.roomList[roomIndex].userTwo != None) and (self.roomList[roomIndex].userTwo.playRoom != None):   
-            roomLink = self.roomList[roomIndex].link
+        if (self.roomList[roomIndex].userTwo != None) and (self.roomList[roomIndex].userTwo.playRoom != None):
             self.roomList[roomIndex].userTwo.playRoom = None
+        roomLink = self.roomList[roomIndex].link
         self.roomList.remove(self.roomList[roomIndex])
         print('room',roomLink,'deleted successfully')
