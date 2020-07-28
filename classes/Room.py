@@ -13,5 +13,3 @@ class Room:
     def setUserTwo(self,user):
         self.userTwo = user
         self.status = 'full'
-        print(user.name,'connected to room')
-

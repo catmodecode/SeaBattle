@@ -5,7 +5,7 @@ class UserManager:
 
     def addUser(self, User):
         self.userList.append(User)
-        print('new user added')
+        print(User.name,' user added')
 
     def getBySid(self, sid):
         return self.userList.index(next((user for user in self.userList if user.sid == sid), None)) 
@@ -14,5 +14,6 @@ class UserManager:
         return(self.userList)
     
     def removeUser(self,sid):
+        leaveUser = next((user for user in self.userList if user.sid == sid), None)
         self.userList.remove(next((user for user in self.userList if user.sid == sid), None))
-        print('user removed')
+        print(leaveUser.name,'user removed')
