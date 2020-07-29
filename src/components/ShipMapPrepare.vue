@@ -17,21 +17,22 @@
 
     <div class="ship-list">
       <div
-        v-for="shipType in Object.keys(shipTypes)"
+        v-for="shipType in Object.keys(ships)"
         :key="shipType"
         v-bind:id="shipType"
       >
-        <div>{{ shipTypes[shipType].name }}</div>
+        <div>{{ ships[shipType][0].name }}</div>
         <div class="ship-container">
           <div
-            v-for="shipIndex in shipTypes[shipType].count"
+            v-for="shipIndex in ships[shipType].length"
             v-on:click="choseShip"
             :key="shipIndex"
           >
             <div v-bind:id="shipType + '-' + shipIndex" class="ship-draw">
+              {{ ships[shipType][shipIndex] }}
               <table>
                 <tr>
-                  <td v-for="i in shipTypes[shipType].size" :key="i"></td>
+                  <td v-for="i in ships[shipType][shipIndex]" :key="i">{{ i }}</td>
                 </tr>
               </table>
             </div>
@@ -44,15 +45,18 @@
 
 <script>
 import constMap from "@/constants/playField.json";
-// import ShipType from "@/classes/ShipType";
+import { mapState } from "vuex";
 
 export default {
   name: "ShipMapPrepare",
   params: {
     horizontalMarks: [],
     verticalMarks: [],
-    shipTypes: {},
+    ships: {},
   },
+  computed: mapState({
+    ships: (state) => state.shipMapStore.ships,
+  }),
   methods: {
     choseShip: function (event) {
       console.log(event.target);
@@ -61,9 +65,9 @@ export default {
   created: function () {
     this.horizontalMarks = constMap.horizontalMarks;
     this.verticalMarks = constMap.verticalMarks;
-    this.shipTypes = constMap.ships;
-    // var shipTypes = this.shipTypes;
-    // this.ships = Object.keys(shipTypes).map((shipType) => {
+    console.log(this.ships['Battleship'][0].size);
+    // var ships = this.ships;
+    // this.ships = Object.keys(ships).map((shipType) => {
     // })
   },
 };

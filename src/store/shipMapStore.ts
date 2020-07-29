@@ -14,10 +14,9 @@ export default {
           shipTypeData.count,
           shipTypeData.size
         );
-        return new Array(shipType.count).map(() => {
-          return new Ship(shipType);
-        });
-        console.log(ShipType);
+        const shipsResult = new Array(shipType.count);
+        shipsResult.fill(new Ship(shipType));
+        return [shipName, shipsResult];
         // return [
         //   shipName,
         //   ((ships) => {
@@ -51,11 +50,13 @@ export default {
     },
   },
   actions: {
-    addShip({ commit }, shipType: string, shipIndex: number, coords: Point) {
+    addShip(
+      { commit } /* shipType: string, shipIndex: number, coords: Point */
+    ) {
       commit("setShip", {
-        shipType: shipType,
-        shipIndex: shipIndex,
-        coords: coords,
+        shipType: "shipType",
+        shipIndex: 1, //shipIndex,
+        coords: new Point(1, 1), //coords,
       });
     },
   },
