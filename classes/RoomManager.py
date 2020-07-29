@@ -10,7 +10,7 @@ class RoomManager:
         self.roomList.append(room)
 
     def listRoom(self):
-       return(self.roomList) 
+       return(self.roomList)
 
     def listReadyRoom(self):
         self.readyRoom = []
@@ -20,8 +20,11 @@ class RoomManager:
                     self.readyRoom.append(room)
 
     def deleteRoom(self, roomIndex):
+        roomLink = None
         if self.roomList[roomIndex].userOne.playRoom != None:
             self.roomList[roomIndex].userOne.playRoom = None
-        if (self.roomList[roomIndex].userTwo != None) and (self.roomList[roomIndex].userTwo.playRoom != None):   
+        if (self.roomList[roomIndex].userTwo != None) and (self.roomList[roomIndex].userTwo.playRoom != None):
             self.roomList[roomIndex].userTwo.playRoom = None
+        roomLink = self.roomList[roomIndex].link
         self.roomList.remove(self.roomList[roomIndex])
+        print('room',roomLink,'deleted successfully')
