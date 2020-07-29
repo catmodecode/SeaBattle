@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import constMap from "@/constants/playField.js";
+import constMap from "@/constants/playField.json";
 // import ShipType from "@/classes/ShipType";
 
 export default {

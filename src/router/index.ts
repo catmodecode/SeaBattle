@@ -1,13 +1,23 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import store from "../store";
+import Auth from "../views/Auth.vue";
+import Room from "../views/Room.vue";
 
 Vue.use(VueRouter);
 
-const routes = store.state.routerStore.links;
-
 const router = new VueRouter({
-  routes,
+  routes: [
+    {
+      path: "/",
+      name: "Auth",
+      component: Auth,
+    },
+    {
+      path: "/room/:roomId",
+      name: "Room",
+      component: Room,
+    },
+  ],
 });
 
 export default router;

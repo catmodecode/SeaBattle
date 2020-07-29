@@ -1,34 +1,37 @@
-import playField from "@/constants/playField.js";
+import playField from "@/constants/playField.json";
 import ShipType from "../classes/ShipType";
+import Point from "@/classes/Point";
+import Ship from "@/classes/Ship";
 
 export default {
   namespaced: true,
   state: () => ({
     ships: Object.fromEntries(
       Object.keys(playField.ships).map((shipName) => {
-        console.log(playField.ships[shipName]);
         const shipTypeData = playField.ships[shipName];
-        console.log(shipTypeData);
-        // let shipType = new ShipType(
-        //   shipTypeData.name,
-        //   shipTypeData.count,
-        //   shipTypeData.size
-        // );
+        const shipType = new ShipType(
+          shipTypeData.name,
+          shipTypeData.count,
+          shipTypeData.size
+        );
+        return new Array(shipType.count).map(() => {
+          return new Ship(shipType);
+        });
         console.log(ShipType);
-        return [
-          shipName,
-          ((ships) => {
-            const arShips = [];
-            for (let shipsCount = 0; shipsCount < ships.count; shipsCount++) {
-              const qShip = [];
-              for (let shipsSize = 0; shipsSize < ships.size; shipsSize++) {
-                qShip.push({ x: null, y: null });
-              }
-              arShips.push(qShip);
-            }
-            return arShips;
-          })(playField.ships[shipName]),
-        ];
+        // return [
+        //   shipName,
+        //   ((ships) => {
+        //     let arShips = [];
+        //     for (let shipsCount = 0; shipsCount < ships.count; shipsCount++) {
+        //       let qShip = [];
+        //       for (let shipsSize = 0; shipsSize < ships.size; shipsSize++) {
+        //         qShip.push(Point(0,0));
+        //       }
+        //       arShips.push(qShip);
+        //     }
+        //     return arShips;
+        //   })(playField.ships[shipName]),
+        // ];
       })
     ),
     // map: Array.from({ length: playField.verticalMarks }, (v) =>
@@ -36,12 +39,19 @@ export default {
     // ),
   }),
   mutations: {
-    setShip(state, { shipType, shipIndex, coords }) {
+    setShip(
+      state,
+      {
+        shipType,
+        shipIndex,
+        coords,
+      }: { shipType: string; shipIndex: number; coords: Point }
+    ) {
       state.ships[shipType][shipIndex] = coords;
     },
   },
   actions: {
-    addShip({ commit }, shipType, shipIndex, coords) {
+    addShip({ commit }, shipType: string, shipIndex: number, coords: Point) {
       commit("setShip", {
         shipType: shipType,
         shipIndex: shipIndex,

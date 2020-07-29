@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import constMap from "@/constants/playField.js";
+import constMap from "@/constants/playField.json";
 
 export default {
   name: "ShipMap",
