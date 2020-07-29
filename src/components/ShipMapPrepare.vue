@@ -23,7 +23,11 @@
       >
         <div>{{ shipTypes[shipType].name }}</div>
         <div class="ship-container">
-          <div v-for="shipIndex in shipTypes[shipType].count" :key="shipIndex">
+          <div
+            v-for="shipIndex in shipTypes[shipType].count"
+            v-on:click="choseShip"
+            :key="shipIndex"
+          >
             <div v-bind:id="shipType + '-' + shipIndex" class="ship-draw">
               <table>
                 <tr>
@@ -40,17 +44,27 @@
 
 <script>
 import constMap from "@/constants/playField.js";
+// import ShipType from "@/classes/ShipType";
 
 export default {
   name: "ShipMapPrepare",
   params: {
     horizontalMarks: [],
     verticalMarks: [],
+    shipTypes: {},
   },
-  created: function() {
+  methods: {
+    choseShip: function (event) {
+      console.log(event.target);
+    },
+  },
+  created: function () {
     this.horizontalMarks = constMap.horizontalMarks;
     this.verticalMarks = constMap.verticalMarks;
     this.shipTypes = constMap.ships;
+    // var shipTypes = this.shipTypes;
+    // this.ships = Object.keys(shipTypes).map((shipType) => {
+    // })
   },
 };
 </script>

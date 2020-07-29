@@ -26,7 +26,7 @@ export default {
   name: "PlayRoom",
   components: {
     shipMap,
-    ShipMapPrepare
+    ShipMapPrepare,
   },
   params: {
     prepearShips: true,
@@ -35,10 +35,10 @@ export default {
     ships: (state) => state.shipMapStore.ships,
   }),
   methods: {
-    showShip: function() {
+    showShip: function () {
       console.log(this.ships);
     },
-    setShip: function() {
+    setShip: function () {
       store.dispatch("shipMapStore/addShip", {
         shipType: "Corvette",
         shipIndex: 2,
@@ -47,7 +47,7 @@ export default {
     },
   },
   sockets: {
-    ship_map: function(data) {
+    ship_map: function (data) {
       console.log(
         'this method was fired by the socket server. eg: io.emit("customEmit", ' +
           data +
@@ -55,9 +55,9 @@ export default {
       );
     },
   },
-  created: function() {
-    this.prepearShips = true
-  }
+  created: function () {
+    this.prepearShips = true;
+  },
 };
 </script>
 

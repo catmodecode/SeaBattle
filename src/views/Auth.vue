@@ -1,7 +1,7 @@
 <template>
   <div class="Auth">
     <h2>Морской бой</h2>
-    <Authenticate/>
+    <Authenticate />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import Authenticate from "@/components/Authenticate.vue";
 export default {
   name: "Auth",
   components: {
-    Authenticate
-  }
+    Authenticate,
+  },
 };
 </script>

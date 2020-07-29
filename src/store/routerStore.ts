@@ -1,5 +1,5 @@
-import Auth from '../views/Auth.vue'
-import Room from '../views/Room.vue'
+import Auth from "../views/Auth.vue";
+import Room from "../views/Room.vue";
 
 export default {
   namespaced: true,
@@ -20,11 +20,11 @@ export default {
   mutations: {
     pushLink(state, link) {
       state.links.push(link);
-    }
+    },
   },
   actions: {
     pushLink({ commit }, link) {
-      commit('pushLink', link);
+      commit("pushLink", link);
     },
   },
 };

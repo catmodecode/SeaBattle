@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import playroom from "@/components/PlayRoom"
+import playroom from "@/components/PlayRoom";
 export default {
   name: "Room",
   components: {
-    playroom
-  }  
-}
+    playroom,
+  },
+};
 </script>

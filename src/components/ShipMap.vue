@@ -24,7 +24,7 @@ export default {
     horizontalMarks: [],
     verticalMarks: [],
   },
-  created: function() {
+  created: function () {
     this.horizontalMarks = constMap.horizontalMarks;
     this.verticalMarks = constMap.verticalMarks;
   },
