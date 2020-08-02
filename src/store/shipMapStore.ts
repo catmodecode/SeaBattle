@@ -7,35 +7,21 @@ export default {
   namespaced: true,
   state: () => ({
     ships: Object.fromEntries(
-      Object.keys(playField.ships).map((shipName) => {
-        const shipTypeData = playField.ships[shipName];
-        const shipType = new ShipType(
-          shipTypeData.name,
-          shipTypeData.count,
-          shipTypeData.size
-        );
-        const shipsResult = new Array(shipType.count);
-        shipsResult.fill(new Ship(shipType));
-        return [shipName, shipsResult];
-        // return [
-        //   shipName,
-        //   ((ships) => {
-        //     let arShips = [];
-        //     for (let shipsCount = 0; shipsCount < ships.count; shipsCount++) {
-        //       let qShip = [];
-        //       for (let shipsSize = 0; shipsSize < ships.size; shipsSize++) {
-        //         qShip.push(Point(0,0));
-        //       }
-        //       arShips.push(qShip);
-        //     }
-        //     return arShips;
-        //   })(playField.ships[shipName]),
-        // ];
+      playField.ships.map((ship) => {
+        const shipType = new ShipType({
+          type: ship.type,
+          name: ship.name,
+          size: ship.size,
+          count: ship.count,
+        });
+        const indexArr = new Array(shipType.count);
+        indexArr.fill(shipType);
+        const shipsResult = indexArr.map((val) => {
+          return new Ship(val);
+        });
+        return [ship.type, shipsResult];
       })
     ),
-    // map: Array.from({ length: playField.verticalMarks }, (v) =>
-    //   Array.from({ length: playField.horizontalMarks }, (v) => null)
-    // ),
   }),
   mutations: {
     setShip(

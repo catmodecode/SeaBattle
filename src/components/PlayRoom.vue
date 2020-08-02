@@ -1,7 +1,6 @@
 <template>
   <div calss="play-room">
-    <a v-on:click="showShip">SHIIIIPS!</a>
-    <a v-on:click="setShip">SET SHIIIIPS!</a>
+    <div>Ctrl+клик левой кнопкой мыши перевернет корабль</div>
     <div id="prepare-map" v-if="prepearShips">
       <ShipMapPrepare />
     </div>
@@ -34,20 +33,8 @@ export default {
   computed: mapState({
     ships: (state) => state.shipMapStore.ships,
   }),
-  methods: {
-    showShip: function () {
-      console.log(this.ships);
-    },
-    setShip: function () {
-      store.dispatch("shipMapStore/addShip", {
-        shipType: "Corvette",
-        shipIndex: 2,
-        coords: [{ x: 1, y: 2 }],
-      });
-    },
-  },
   sockets: {
-    ship_map: function (data) {
+    shipmap: function (data) {
       console.log(
         'this method was fired by the socket server. eg: io.emit("customEmit", ' +
           data +
