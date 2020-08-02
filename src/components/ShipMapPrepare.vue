@@ -166,7 +166,6 @@ export default {
         return val;
       });
     });
-    console.log(this.shipList);
   },
 };
 </script>
