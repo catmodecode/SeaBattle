@@ -4,14 +4,19 @@ from classes.User import User
 from classes.UserManager import UserManager
 from classes.Room import Room
 from classes.RoomManager import RoomManager
+from classes.Field import Field
  
 sio = socketio.Server(cors_allowed_origins='*')
 app = socketio.WSGIApp(sio, static_files={ 
-    '/': {'content_type': 'text/html', 'filename': 'index.html'} 
-}) 
+    '/': './dist/index.html', 
+    '/js': './dist/js', 
+    '/css': './dist/css', 
+    '/favicon.ico': './dist/favicon.ico', 
+})
  
 authUsers = UserManager()
 playRooms = RoomManager()
+battlefield = Field()
 
 @sio.event 
 def connect(sid, environ): 
@@ -40,6 +45,18 @@ def quickroom(sid, data):
 @sio.event 
 def my_message(sid, data): 
     print('message ', data)
+
+@sio.event
+def shipIn(sid, data):
+    battlefield.setShipList(data)
+    for item in range(len(battlefield.shipList)):
+        if battlefield.shipList[item].canShipPlaced(battlefield):
+            battlefield.shipList[item].shipPlacing(battlefield)
+        else:
+            return ('failure')
+    battlefield.printField()
+    return ('succesful')
+            
  
 @sio.event 
 def disconnect(sid): 
