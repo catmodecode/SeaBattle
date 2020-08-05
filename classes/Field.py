@@ -15,11 +15,11 @@ class Field:
             self.shipList[ship].type = clientShipList[ship]['type']
             self.shipList[ship].size = clientShipList[ship]['size']
             self.shipList[ship].direction = clientShipList[ship]['direction']
-            self.shipList[ship].coordinate = clientShipList[ship]['coordinate']
+            self.shipList[ship].coordinate = clientShipList[ship]['position']
     
     def printField(self):
-        for x in range(10):
-            for y in range(10):
+        for y in range(10):
+            for x in range(10):
                 if self.seaField[x][y].status == 'empty':
                     print('O', end = ' ')
                 else:
