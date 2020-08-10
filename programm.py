@@ -48,16 +48,15 @@ def my_message(sid, data):
 
 @sio.event
 def shipIn(sid, data):
-    battlefield.setShipList(data)
-    for item in range(len(battlefield.shipList)):
-        if battlefield.shipList[item].canShipPlaced(battlefield):
-            battlefield.shipList[item].shipPlacing(battlefield)
-        else:
-            return ('failure')
-    battlefield.printField()
-    return ('succesful')
-            
- 
+    if authUsers.getBySid(sid) != None:
+        playRooms.setPlayerShip(sid,data)
+    else:
+        return('failure')
+     
+@sio.event
+def shot(sid,data):
+    playRooms.shotAtCoordinate(sid,data)
+
 @sio.event 
 def disconnect(sid): 
     userIndex = authUsers.getBySid(sid)
