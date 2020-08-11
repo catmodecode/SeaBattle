@@ -12,7 +12,7 @@ class Room:
         self.userTwo = None
 
     playerOneField = Field()
-    playerTwoField  =Field()
+    playerTwoField = Field()
 
     def setUserTwo(self,user):
         self.userTwo = user

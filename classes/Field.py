@@ -35,6 +35,9 @@ class Field:
                     print('M', end = ' ')
             print('')
 
+    def shotStatusReturn(self,shotX,shotY):
+        return self.seaField[shotX][shotY].status
+
     def canShooted(self,shotX,shotY):
         for shipItem in self.shipList:
             shipX = shipItem.coordinate['x']
