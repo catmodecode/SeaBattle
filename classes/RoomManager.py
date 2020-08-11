@@ -21,23 +21,19 @@ class RoomManager:
                     self.readyRoom.append(room)
 
     def setPlayerShip(self,playerSid,shipData):
+        itemField = None
         for roomItem in self.roomList:
             if roomItem.userOne.sid == playerSid:
-                roomItem.playerOneField.setShipList(shipData)
-                for shipItem in roomItem.playerOneField.shipList:
-                    if shipItem.canShipPlaced(roomItem.playerOneField):
-                        shipItem.shipPlacing(roomItem.playerOneField)
-                    else:
-                        return ('failure')
-                roomItem.playerOneField.printField(roomItem.playerOneField)
+                itemField = roomItem.playerOneField
             elif roomItem.userTwo.sid == playerSid:
-                roomItem.playerTwoField.setShipList(shipData)
-                for shipItem in roomItem.playerTwoField.shipList:
-                    if shipItem.canShipPlaced(roomItem.playerTwoField):
-                        shipItem.shipPlacing(roomItem.playerTwoField)
-                    else:
-                        return ('failure')
-                roomItem.playerTwoField.printField(roomItem.playerTwoField)
+                itemField = roomItem.playerTwoField
+            itemField.setShipList(shipData)
+            for shipItem in itemField.shipList:
+                if shipItem.canShipPlaced(itemField):
+                    shipItem.shipPlacing(itemField)
+                else:
+                    return ('failure')
+            itemField.printField(itemField)
         return('succesful')
 
     def shotAtCoordinate(self,playerSid,coordinateData):
