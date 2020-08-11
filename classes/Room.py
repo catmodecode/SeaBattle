@@ -1,4 +1,5 @@
 from classes.User import User
+from classes.Field import Field
 
 class Room:
     def __init__(self, user, status):
@@ -9,6 +10,9 @@ class Room:
         self.link = user.sid
         self.userOne = user
         self.userTwo = None
+
+    playerOneField = Field()
+    playerTwoField = Field()
 
     def setUserTwo(self,user):
         self.userTwo = user

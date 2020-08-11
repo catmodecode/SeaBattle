@@ -1,6 +1,7 @@
 class Ship:
     direction = True
     size = 0
+    hp = 0
     type = None
     coordinate = {'x':0,'y':0}
 

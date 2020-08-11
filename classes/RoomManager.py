@@ -1,5 +1,6 @@
 from classes.Room import Room
 from classes.User import User
+from classes.Field import Field
 
 class RoomManager:
     roomList = []
@@ -19,6 +20,32 @@ class RoomManager:
                 if (room.status != 'full') and (room.status != 'private'):
                     self.readyRoom.append(room)
 
+    def setPlayerShip(self,playerSid,shipData):
+        itemField = None
+        for roomItem in self.roomList:
+            if roomItem.userOne.sid == playerSid:
+                itemField = roomItem.playerOneField
+            elif roomItem.userTwo.sid == playerSid:
+                itemField = roomItem.playerTwoField
+            itemField.setShipList(shipData)
+            for shipItem in itemField.shipList:
+                if shipItem.canShipPlaced(itemField):
+                    shipItem.shipPlacing(itemField)
+                else:
+                    return ('failure')
+            itemField.printField(itemField)
+        return('succesful')
+
+    def shotAtCoordinate(self,playerSid,coordinateData):
+        itemField = None
+        for roomItem in self.roomList:
+            if roomItem.userOne.sid == playerSid:
+                itemField = roomItem.playerTwoField                       
+            elif roomItem.userTwo.sid == playerSid:
+                itemField = roomItem.playerOneField       
+            itemField.printField(roomItem.playerTwoField)            
+            return itemField.canShooted(coordinateData['x'],coordinateData['y'])    
+    
     def deleteRoom(self, roomIndex):
         roomLink = None
         if self.roomList[roomIndex].userOne.playRoom != None:

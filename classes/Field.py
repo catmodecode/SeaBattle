@@ -10,18 +10,55 @@ class Field:
     shipList = []
 
     def setShipList(self, clientShipList):
+        self.shipList = []
         for ship in range(len(clientShipList)):
             self.shipList.append(Ship())
             self.shipList[ship].type = clientShipList[ship]['type']
             self.shipList[ship].size = clientShipList[ship]['size']
             self.shipList[ship].direction = clientShipList[ship]['direction']
             self.shipList[ship].coordinate = clientShipList[ship]['position']
+            self.shipList[ship].hp = self.shipList[ship].size
     
-    def printField(self):
+    def printField(self,field):
+        print('')
         for y in range(10):
             for x in range(10):
-                if self.seaField[x][y].status == 'empty':
+                if field.seaField[x][y].status == 'empty':
                     print('O', end = ' ')
-                else:
+                elif field.seaField[x][y].status == 'ship':
+                    print('S', end = ' ')
+                elif field.seaField[x][y].status == 'hit':
+                    print('-', end = ' ')
+                elif field.seaField[x][y].status == 'destroyed':
                     print('X', end = ' ')
+                elif field.seaField[x][y].status == 'miss':
+                    print('M', end = ' ')
             print('')
+
+    def shotStatusReturn(self,shotX,shotY):
+        return self.seaField[shotX][shotY].status
+
+    def canShooted(self,shotX,shotY):
+        for shipItem in self.shipList:
+            shipX = shipItem.coordinate['x']
+            shipY = shipItem.coordinate['y']
+            if shipItem.direction:
+                if shotY == shipY and shipX <= shotX <= shipItem.size + shipX:
+                    if self.seaField[shotX][shotY].status == 'ship':
+                        self.seaField[shotX][shotY].status = 'hit'
+                        shipItem.hp -= 1
+                        if shipItem.hp <= 0:
+                            for counter in range(shipItem.size):
+                                self.seaField[shipX + counter][shipY].status = 'destroyed'
+                elif self.seaField[shotX][shotY].status == 'empty':
+                    self.seaField[shotX][shotY].status = 'miss'
+            else:
+                if shotX == shipX and shipY <= shotY <= shipItem.size + shipY:
+                    if self.seaField[shotX][shotY].status == 'ship':
+                        self.seaField[shotX][shotY].status = 'hit'
+                        shipItem.hp -= 1
+                        if shipItem.hp <= 0:
+                            for counter in range(shipItem.size):
+                                self.seaField[shipX][shipY + counter].status = 'destroyed'
+                elif self.seaField[shotX][shotY].status == 'empty':
+                    self.seaField[shotX][shotY].status = 'miss'
