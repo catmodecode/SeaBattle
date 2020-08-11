@@ -43,8 +43,8 @@ class RoomManager:
                 itemField = roomItem.playerTwoField                       
             elif roomItem.userTwo.sid == playerSid:
                 itemField = roomItem.playerOneField       
-            itemField.canShooted(coordinateData['x'],coordinateData['y'])
-            itemField.printField(roomItem.playerTwoField)                
+            itemField.printField(roomItem.playerTwoField)            
+            return itemField.canShooted(coordinateData['x'],coordinateData['y'])    
     
     def deleteRoom(self, roomIndex):
         roomLink = None

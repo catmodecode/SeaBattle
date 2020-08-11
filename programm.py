@@ -55,7 +55,7 @@ def shipIn(sid, data):
      
 @sio.event
 def shot(sid,data):
-    playRooms.shotAtCoordinate(sid,data)
+    return playRooms.shotAtCoordinate(sid,data)
 
 @sio.event 
 def disconnect(sid): 
