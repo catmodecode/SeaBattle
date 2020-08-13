@@ -1,8 +1,34 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view v-if="connected" />
+    <noconnect v-else />
   </div>
 </template>
+
+<script>
+import noconnect from "@/components/NoConnect.vue";
+
+export default {
+  name: "App",
+  components: {
+    noconnect,
+  },
+  data: function () {
+    return {
+      connected: false,
+    };
+  },
+  created: function () {
+    const socket = this.$socket;
+    socket.on("disconnect", (reason) => {
+      this.connected = false;
+    });
+    socket.on("connect", (reason) => {
+      this.connected = true;
+    });
+  },
+};
+</script>
 
 <style lang="scss">
 #app {

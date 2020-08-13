@@ -1,6 +1,5 @@
 <template>
   <div calss="play-room">
-    <div>Ctrl+клик левой кнопкой мыши перевернет корабль</div>
     <div id="prepare-map" v-if="prepearShips">
       <ShipMapPrepare />
     </div>
