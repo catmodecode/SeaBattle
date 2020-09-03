@@ -25,8 +25,15 @@ class RoomManager:
         for roomItem in self.roomList:
             if roomItem.userOne.sid == playerSid:
                 itemField = roomItem.playerOneField
+                roomItem.userOne.ready = True
+                if roomItem.userTwo:
+                    if roomItem.userTwo.ready:
+                        roomItem.userOne.turn = True
             elif roomItem.userTwo.sid == playerSid:
                 itemField = roomItem.playerTwoField
+                roomItem.userTwo.ready = True
+                if roomItem.userOne.ready:
+                    roomItem.userOne.turn = True
             itemField.setShipList(shipData)
             for shipItem in itemField.shipList:
                 if shipItem.canShipPlaced(itemField):
@@ -40,10 +47,21 @@ class RoomManager:
         itemField = None
         for roomItem in self.roomList:
             if roomItem.userOne.sid == playerSid:
-                itemField = roomItem.playerTwoField                       
+                itemField = roomItem.playerTwoField
+                if roomItem.userOne.turn != True:
+                    return ('Fail')
+                else:
+                    roomItem.userOne.turn = False
+                    roomItem.userTwo.turn = True
+                itemField.printField(roomItem.playerTwoField)
             elif roomItem.userTwo.sid == playerSid:
-                itemField = roomItem.playerOneField       
-            itemField.printField(roomItem.playerTwoField)            
+                itemField = roomItem.playerOneField
+                if roomItem.userTwo.turn != True:
+                    return ('Fail')
+                else:
+                    roomItem.userOne.turn = True
+                    roomItem.userTwo.turn = False
+                itemField.printField(roomItem.playerOneField)
             return itemField.canShooted(coordinateData['x'],coordinateData['y'])    
     
     def deleteRoom(self, roomIndex):

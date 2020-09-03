@@ -3,6 +3,8 @@ class User:
         self.sid = sid
         self.name = name
         self.playRoom = None
+        self.ready = False
+        self.turn = False
     
     def setName(self, name):
         self.name = name
