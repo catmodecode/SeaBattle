@@ -1,6 +1,7 @@
 {
   "horizontalMarks": ["А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И", "К"],
   "verticalMarks": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  "fieldStates": ["miss", "hit", "clear"],
   "ships": [
     { "type": "Corvette", "name": "Корвет", "count": 4, "size": 1 },
     { "type": "Destroyer", "name": "Эсминец", "count": 3, "size": 2 },

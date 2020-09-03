@@ -49,36 +49,42 @@
           ></td>
         </tr>
       </table>
-
-      <div v-if="shipsPlaced.length == ships.length">
+      <div>
         <input
+          type="button"
+          class="randomButton"
+          v-on:click="setRandom"
+          value="Случайно"
+        />
+        <input
+          v-if="shipsPlaced.length == ships.length"
           type="button"
           class="readyButton"
           v-on:click="setReady"
           value="Готов"
         />
-      </div>
 
-      <div class="ship-container">
-        <div
-          v-for="ship in ships"
-          :key="ships.indexOf(ship)"
-          v-bind:id="ship.type + ships.indexOf(ship)"
-        >
+        <div class="ship-container">
           <div
-            class="ship-draw"
-            v-show="!ship.placed"
-            :data-shipIndex="ships.indexOf(ship)"
+            v-for="ship in ships"
+            :key="ships.indexOf(ship)"
+            v-bind:id="ship.type + ships.indexOf(ship)"
           >
-            <table :data-shipIndex="ships.indexOf(ship)">
-              <tr :data-shipIndex="ships.indexOf(ship)">
-                <td
-                  v-for="i in ship.size"
-                  :key="i"
-                  :data-shipIndex="ships.indexOf(ship)"
-                ></td>
-              </tr>
-            </table>
+            <div
+              class="ship-draw"
+              v-show="!ship.placed"
+              :data-shipIndex="ships.indexOf(ship)"
+            >
+              <table :data-shipIndex="ships.indexOf(ship)">
+                <tr :data-shipIndex="ships.indexOf(ship)">
+                  <td
+                    v-for="i in ship.size"
+                    :key="i"
+                    :data-shipIndex="ships.indexOf(ship)"
+                  ></td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -90,6 +96,7 @@
 import constMap from "@/constants/playField.json";
 import Point from "@/classes/Point";
 import Ship from "@/classes/Ship";
+import store from "@/store";
 
 export default {
   name: "ShipMapPrepare",
@@ -180,14 +187,19 @@ export default {
       console.log(this.chosenShip);
     },
     placeShip: function () {
+      // Drop ship to stock
       if (this.hoveredField == false && this.chosenShip !== null) {
-        this.chosenShip.setPosition(-1, -1);
+        this.chosenShip.setPosition(new Point(-1, -1));
         this.chosenShip.placed = false;
         this.chosenShip = null;
       }
+
+      // No ship in hands
       if (this.chosenShip == null) {
         return;
       }
+
+      // Out of bounds
       const chosenShip = this.chosenShip;
       if (
         chosenShip.position.x < 0 ||
@@ -197,6 +209,8 @@ export default {
       ) {
         return;
       }
+
+      // Check for intersect
       if (
         this.shipsPlaced.find((ship) => {
           return chosenShip.isIntersect(ship);
@@ -204,6 +218,8 @@ export default {
       ) {
         return;
       }
+
+      // Place ship with current mouse position
       const shipType = this.chosenShip.type;
       const index = this.shipList.indexOf(this.chosenShip);
       if (!this.isPlaced(shipType, index)) {
@@ -226,8 +242,65 @@ export default {
         return newShip;
       });
       this.$socket.emit("shipIn", shipsToSend, (reply) => {
-        console.log(reply, shipsToSend);
+        console.log(reply);
+        store.dispatch("shipMapStore/setShips", shipsToSend);
+        store.dispatch("shipMapStore/setReady", true);
+        if (reply == "succesful") {
+          this.startGame();
+        }
       });
+    },
+    clearField: function () {
+      const shipsCount = this.ships.length;
+      // Reset placed ships
+      for (let i = 0; i < shipsCount; i++) {
+        this.ships[i].setPosition(new Point(-1, -1));
+        this.ships[i].placed = false;
+      }
+      this.chosenShip = true;
+      this.chosenShip = null;
+    },
+    setRandom: function () {
+      const shipsCount = this.ships.length;
+      let xPos, yPos, direction, ship;
+
+      this.clearField();
+
+      // place new ones
+      const maxIntersect = 100;
+      let intersects;
+      for (let i = 0; i < shipsCount; i++) {
+        intersects = 0;
+        do {
+          direction = Math.random() >= 0.5;
+          xPos = Math.floor(Math.random() * this.horizontalMarks.length);
+          yPos = Math.floor(Math.random() * this.verticalMarks.length);
+          this.ships[i].direction = direction;
+          this.ships[i].setPosition(new Point(xPos, yPos));
+          ship = this.ships[i];
+          intersects++;
+        } while (
+          this.shipsPlaced.find((placedShip) => {
+            return ship.isIntersect(placedShip);
+          }) !== undefined &&
+          intersects < maxIntersect
+        );
+        if (
+          intersects >= maxIntersect ||
+          !(this.ships[i].position.x >= 0 && this.ships[i].position.y >= 0)
+        ) {
+          this.setRandom();
+          return;
+        } else {
+          this.ships[i].placed = true;
+        }
+
+        this.chosenShip = true;
+        this.chosenShip = null;
+      }
+    },
+    startGame: function () {
+      console.log("lets rock");
     },
   },
   created: function () {
@@ -248,11 +321,9 @@ export default {
     this.horizontalMarks = constMap.horizontalMarks;
     this.verticalMarks = constMap.verticalMarks;
     const ships = this.$store.state.shipMapStore.ships;
-    this.shipList = Object.keys(ships).flatMap((key) => {
-      return ships[key].map((val) => {
-        val.placed = false;
-        return val;
-      });
+    this.shipList = ships.map((val) => {
+      val.placed = false;
+      return val;
     });
   },
 };
