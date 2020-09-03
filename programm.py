@@ -1,19 +1,16 @@
-import eventlet 
-import socketio 
+import socketio
+from aiohttp import web
+import eventlet
 from classes.User import User
 from classes.UserManager import UserManager
 from classes.Room import Room
 from classes.RoomManager import RoomManager
 from classes.Field import Field
- 
-sio = socketio.Server(cors_allowed_origins='*')
-app = socketio.WSGIApp(sio, static_files={ 
-    '/': './dist/index.html', 
-    '/js': './dist/js', 
-    '/css': './dist/css', 
-    '/favicon.ico': './dist/favicon.ico', 
-})
- 
+
+sio = socketio.AsyncServer(cors_allowed_origins='*',async_mode='aiohttp')
+app = web.Application()
+sio.attach(app)
+
 authUsers = UserManager()
 playRooms = RoomManager()
 battlefield = Field()
@@ -58,7 +55,7 @@ def shot(sid,data):
     return playRooms.shotAtCoordinate(sid,data)
 
 @sio.event 
-def disconnect(sid): 
+def disconnect(sid):
     userIndex = authUsers.getBySid(sid)
     if userIndex != None:
         if authUsers.userList[userIndex].playRoom != None:
@@ -67,4 +64,4 @@ def disconnect(sid):
     print('disconnect ', sid) 
  
 if __name__ == '__main__': 
-    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+    web.run_app(app, port=5000)
