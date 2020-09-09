@@ -43,26 +43,45 @@ class RoomManager:
             itemField.printField(itemField)
         return('succesful')
 
+    def heavenOrHell(self,player,playerField):
+        if playerField.lives <= 0:
+            player.live = False
+            return ('Hell')
+        else:
+            return('Heaven')
+        
     def shotAtCoordinate(self,playerSid,coordinateData):
         itemField = None
+        result = None
+        roomIndex = -1
         for roomItem in self.roomList:
+            roomIndex += 1
             if roomItem.userOne.sid == playerSid:
                 itemField = roomItem.playerTwoField
                 if roomItem.userOne.turn != True:
                     return ('Fail')
                 else:
-                    roomItem.userOne.turn = False
-                    roomItem.userTwo.turn = True
+                    result = itemField.canShooted(coordinateData['x'],coordinateData['y'])
+                    if result == 'miss':
+                        roomItem.userOne.turn = False
+                        roomItem.userTwo.turn = True  
                 itemField.printField(roomItem.playerTwoField)
+                if self.heavenOrHell(roomItem.userTwo,itemField) == 'Hell':
+                    result = 'Player One Win'
             elif roomItem.userTwo.sid == playerSid:
                 itemField = roomItem.playerOneField
                 if roomItem.userTwo.turn != True:
                     return ('Fail')
                 else:
-                    roomItem.userOne.turn = True
-                    roomItem.userTwo.turn = False
+                    result = itemField.canShooted(coordinateData['x'],coordinateData['y'])
+                    if result == 'miss':
+                        roomItem.userOne.turn = True
+                        roomItem.userTwo.turn = False
+                result = itemField.canShooted(coordinateData['x'],coordinateData['y'])  
                 itemField.printField(roomItem.playerOneField)
-            return itemField.canShooted(coordinateData['x'],coordinateData['y'])    
+                if self.heavenOrHell(roomItem.userTwo,itemField) == 'Hell':
+                    result = 'Player Two Win'
+            return result
     
     def deleteRoom(self, roomIndex):
         roomLink = None

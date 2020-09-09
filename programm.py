@@ -52,7 +52,19 @@ def shipIn(sid, data):
      
 @sio.event
 def shot(sid,data):
-    return playRooms.shotAtCoordinate(sid,data)
+    result = playRooms.shotAtCoordinate(sid,data)
+    if result == 'Player One Win' or result == 'Player Two Win':
+        userIndex = authUsers.getBySid(sid)
+        if userIndex != None:
+            if authUsers.userList[userIndex].playRoom != None:
+                nRoom = authUsers.userList[userIndex].playRoom
+                playerOne = authUsers.getBySid(playRooms.roomList[nRoom].userOne.sid)
+                playerTwo = authUsers.getBySid(playRooms.roomList[nRoom].userTwo.sid)
+                authUsers.userList[playerOne].playRoom = None
+                authUsers.userList[playerTwo].playRoom = None
+                playRooms.deleteRoom(nRoom)
+    return result
+
 
 @sio.event 
 def disconnect(sid):

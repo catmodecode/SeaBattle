@@ -9,6 +9,7 @@ class Room:
         self.status = status
         self.link = user.sid
         self.userOne = user
+        self.userOne.live = True
         self.userTwo = None
 
     playerOneField = Field()
@@ -16,4 +17,5 @@ class Room:
 
     def setUserTwo(self,user):
         self.userTwo = user
+        self.userTwo.live = True
         self.status = 'full'
