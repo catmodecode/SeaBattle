@@ -5,6 +5,7 @@ class User:
         self.playRoom = None
         self.ready = False
         self.turn = False
+        self.live = False
     
     def setName(self, name):
         self.name = name

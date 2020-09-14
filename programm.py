@@ -49,10 +49,28 @@ def shipIn(sid, data):
         playRooms.setPlayerShip(sid,data)
     else:
         return('failure')
-     
+
 @sio.event
 def shot(sid,data):
-    return playRooms.shotAtCoordinate(sid,data)
+    result = playRooms.shotAtCoordinate(sid,data)
+    userIndex = authUsers.getBySid(sid)
+    nRoom = authUsers.userList[userIndex].playRoom
+    if sid == playRooms.roomList[nRoom].userOne.sid:
+        sio.emit = ('shooting',playRooms.roomList[nRoom].playerTwoField,playRooms.roomList[nRoom].userOne.sid)
+        sio.emit = ('shooting',playRooms.roomList[nRoom].playerTwoField,playRooms.roomList[nRoom].userTwo.sid)
+    else:
+        sio.emit = ('shooting',playRooms.roomList[nRoom].playerOneField,playRooms.roomList[nRoom].userOne.sid)
+        sio.emit = ('shooting',playRooms.roomList[nRoom].playerOneField,playRooms.roomList[nRoom].userTwo.sid)
+    if result == 'Player One Win' or result == 'Player Two Win':
+        if userIndex != None:
+            if authUsers.userList[userIndex].playRoom != None:
+                playerOne = authUsers.getBySid(playRooms.roomList[nRoom].userOne.sid)
+                playerTwo = authUsers.getBySid(playRooms.roomList[nRoom].userTwo.sid)
+                authUsers.userList[playerOne].playRoom = None
+                authUsers.userList[playerTwo].playRoom = None
+                playRooms.deleteRoom(nRoom)
+    return result
+
 
 @sio.event 
 def disconnect(sid):
