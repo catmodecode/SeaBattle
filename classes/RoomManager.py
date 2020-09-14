@@ -50,7 +50,7 @@ class RoomManager:
         else:
             return('Heaven')
         
-    def shotAtCoordinate(self,playerSid,coordinateData):
+    def shotAtCoordinate(self,playerSid,cData):
         itemField = None
         result = None
         roomIndex = -1
@@ -61,7 +61,7 @@ class RoomManager:
                 if roomItem.userOne.turn != True:
                     return ('Fail')
                 else:
-                    result = itemField.canShooted(coordinateData['x'],coordinateData['y'])
+                    result = itemField.canShooted(cData['x'],cData['y'])
                     if result == 'miss':
                         roomItem.userOne.turn = False
                         roomItem.userTwo.turn = True  
@@ -73,11 +73,10 @@ class RoomManager:
                 if roomItem.userTwo.turn != True:
                     return ('Fail')
                 else:
-                    result = itemField.canShooted(coordinateData['x'],coordinateData['y'])
+                    result = itemField.canShooted(cData['x'],cData['y'])
                     if result == 'miss':
                         roomItem.userOne.turn = True
-                        roomItem.userTwo.turn = False
-                result = itemField.canShooted(coordinateData['x'],coordinateData['y'])  
+                        roomItem.userTwo.turn = False  
                 itemField.printField(roomItem.playerOneField)
                 if self.heavenOrHell(roomItem.userTwo,itemField) == 'Hell':
                     result = 'Player Two Win'
