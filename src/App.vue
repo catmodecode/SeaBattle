@@ -41,6 +41,10 @@ export default {
   color: #2c3e50;
 }
 
+html {
+  background: black;
+}
+
 #nav {
   padding: 30px;
 }

@@ -331,6 +331,7 @@ export default {
 
 <style lang="scss" scoped>
 $cellSize: 25px;
+$shipColor: #5c4c2f;
 
 .prepare {
   display: flex;
@@ -347,7 +348,7 @@ $cellSize: 25px;
 }
 
 .ship-draw td {
-  background: #0099ff;
+  background: $shipColor;
 }
 
 .ship-map-prepare td,
@@ -358,11 +359,11 @@ $cellSize: 25px;
 }
 
 .phantom {
-  border-color: #0099ff;
+  border-color: $shipColor;
 }
 
 .placed {
-  background-color: #0099ff;
+  background-color: $shipColor;
 }
 
 #phantom-block {
