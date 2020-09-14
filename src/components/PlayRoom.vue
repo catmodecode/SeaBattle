@@ -1,15 +1,14 @@
 <template>
   <div calss="play-room">
-    <div>Ctrl+клик левой кнопкой мыши перевернет корабль</div>
-    <div id="prepare-map" v-if="prepearShips">
+    <div id="prepare-map" v-if="!ready">
       <ShipMapPrepare />
     </div>
     <div id="ready-map" v-else>
-      <div id="my-map">
-        <shipMap />
+      <div class="play-map" id="my-map">
+        <shipMap v-bind:ships="ships" />
       </div>
-      <div id="enemy-map">
-        <shipMap />
+      <div class="play-map" id="enemy-map">
+        <shipMap v-bind:ships="[]" />
       </div>
     </div>
   </div>
@@ -19,7 +18,7 @@
 import shipMap from "./ShipMap";
 import ShipMapPrepare from "./ShipMapPrepare";
 import { mapState } from "vuex";
-import store from "@/store";
+// import store from "@/store";
 
 export default {
   name: "PlayRoom",
@@ -27,11 +26,9 @@ export default {
     shipMap,
     ShipMapPrepare,
   },
-  params: {
-    prepearShips: true,
-  },
   computed: mapState({
     ships: (state) => state.shipMapStore.ships,
+    ready: (state) => state.shipMapStore.ready,
   }),
   sockets: {
     shipmap: function (data) {
@@ -41,9 +38,6 @@ export default {
           ")"
       );
     },
-  },
-  created: function () {
-    this.prepearShips = true;
   },
 };
 </script>
@@ -59,5 +53,14 @@ $cellSize: 25px;
   width: $cellSize;
   height: $cellSize;
   border: solid;
+}
+
+.play-map {
+  margin: auto;
+}
+
+#ready-map {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 </style>

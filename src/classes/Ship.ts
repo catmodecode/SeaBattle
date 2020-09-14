@@ -64,6 +64,10 @@ export default class Ship {
     const maxY = yLength - 1 - (this.direction ? 0 : this.size - 1);
     if (pos.x >= 0 && pos.x <= maxX && pos.y >= 0 && pos.y <= maxY) {
       this.position = pos;
+      return true;
+    } else {
+      this.position = new Point(-1, -1);
+      return false;
     }
   }
 }

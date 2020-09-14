@@ -1,12 +1,11 @@
 import playField from "@/constants/playField.json";
 import ShipType from "../classes/ShipType";
-import Point from "@/classes/Point";
 import Ship from "@/classes/Ship";
 
 export default {
   namespaced: true,
   state: () => ({
-    ships: Object.fromEntries(
+    ships: Array.from(
       playField.ships.map((ship) => {
         const shipType = new ShipType({
           type: ship.type,
@@ -19,31 +18,25 @@ export default {
         const shipsResult = indexArr.map((val) => {
           return new Ship(val);
         });
-        return [ship.type, shipsResult];
+        return shipsResult;
       })
-    ),
+    ).flat(),
+    ready: false,
   }),
   mutations: {
-    setShip(
-      state,
-      {
-        shipType,
-        shipIndex,
-        coords,
-      }: { shipType: string; shipIndex: number; coords: Point }
-    ) {
-      state.ships[shipType][shipIndex] = coords;
+    setShips(state, ships) {
+      state.ships = ships;
+    },
+    setReady(state, readyState) {
+      state.ready = readyState;
     },
   },
   actions: {
-    addShip(
-      { commit } /* shipType: string, shipIndex: number, coords: Point */
-    ) {
-      commit("setShip", {
-        shipType: "shipType",
-        shipIndex: 1, //shipIndex,
-        coords: new Point(1, 1), //coords,
-      });
+    setShips({ commit }, ships) {
+      commit("setShips", ships);
+    },
+    setReady({ commit }, readyState) {
+      commit("setReady", readyState);
     },
   },
 };
