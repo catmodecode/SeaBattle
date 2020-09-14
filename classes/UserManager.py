@@ -8,7 +8,13 @@ class UserManager:
         print(User.name,'join')
 
     def getBySid(self, sid):
-        return self.userList.index(next((user for user in self.userList if user.sid == sid), None)) 
+        index = 0
+        for user in self.userList:
+            if user.sid == sid:
+                return index
+            index += 1
+        index = None
+        return index
 
     def getList(self):
         return(self.userList)
