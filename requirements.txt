@@ -4,5 +4,5 @@ greenlet==0.4.16
 monotonic==1.5
 python-engineio==3.13.1
 python-socketio==4.6.0
-aiohttp==3.6.2
+aiohttp==3.7.4
 six==1.15.0
